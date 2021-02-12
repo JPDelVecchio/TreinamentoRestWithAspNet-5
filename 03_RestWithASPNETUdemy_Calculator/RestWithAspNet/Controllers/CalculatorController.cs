@@ -79,7 +79,7 @@ namespace RestWithAspNet.Controllers
 
             return BadRequest("Invalid Input");
         }
-        [HttpGet("square-root/{firtNumber}/{secondNumber}")]
+        [HttpGet("square-root/{firtNumber}")]
         public IActionResult SquareRoot(string firtNumber)
         {
             if (IsNumeric(firtNumber))
