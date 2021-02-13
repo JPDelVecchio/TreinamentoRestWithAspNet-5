@@ -3,7 +3,7 @@ using RestWithAspNet.Model;
 
 namespace RestWithAspNet.Services
 {
-    public interface IPersonServicecs
+    public interface IPersonServices
     {
         Person Create(Person person);
         Person FindById(long id);

@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Numerics;
+using RestWithAspNet.Model;
+using RestWithAspNet.Services;
 
 namespace RestWithAspNet.Controllers
 {
@@ -13,22 +10,47 @@ namespace RestWithAspNet.Controllers
     public class PersonController : ControllerBase
     { 
         private readonly ILogger<PersonController> _logger;
+        private IPersonServices _personService;
 
-        public PersonController(ILogger<PersonController> logger)
+        public PersonController(ILogger<PersonController> logger, IPersonServices personService)
         {
             _logger = logger;
+            _personService = personService;
         }
 
-        [HttpGet("sum/{firtNumber}/{secondNumber}")]
-        public IActionResult Sum(string firtNumber, string secondNumber)
+        [HttpGet]
+        public IActionResult Get()
         {
-            if (IsNumeric(firtNumber) && IsNumeric(secondNumber))
-            {
-                var sum = ConvertToDecimal(firtNumber) + ConvertToDecimal(secondNumber);
-                return Ok( sum.ToString());
-            }
+            return Ok(_personService.PersonFindAll());
+        }
 
-            return BadRequest("Invalid Input");
-        }    
+        [HttpGet("{id}")]
+        public IActionResult Get(long id)
+        {
+            var person = _personService.FindById(id);
+            if (person == null) return NotFound() ;
+            return Ok(person);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] Person person)
+        {
+            if (person == null) return BadRequest();
+            return Ok(_personService.Create(person) );
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] Person person)
+        {
+            if (person == null) return NotFound();
+            return Ok(_personService.Update(person));
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id)
+        {
+            _personService.Delete(id);
+            return NoContent();
+        }
     }
 }
