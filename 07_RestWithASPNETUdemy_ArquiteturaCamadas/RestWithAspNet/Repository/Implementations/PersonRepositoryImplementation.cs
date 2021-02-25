@@ -1,18 +1,17 @@
 ﻿using RestWithAspNet.Model;
-using RestWithAspNet.Model.Context;
+using RestWithAspNet.Model.Context; 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq; 
 
-namespace RestWithAspNet.Services.Implementations
+namespace RestWithAspNet.Repository.Implementations
 {
-    public class PersonServiceImplementation : IPersonServices
+    public class PersonRepositoryImplementation : IPersonRepository
+
     {
         private MySqlContext _context;
 
-        public PersonServiceImplementation(MySqlContext context)
+        public PersonRepositoryImplementation(MySqlContext context)
         {
             _context = context;
         }
@@ -78,7 +77,7 @@ namespace RestWithAspNet.Services.Implementations
             return person;
         }
 
-        private bool Exist(long id)
+        public bool Exist(long id)
         {
             return _context.Persons.Any(p => p.Id.Equals(id));
         }
